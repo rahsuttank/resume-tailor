@@ -6,9 +6,17 @@ const mongoose = require("mongoose");
 
 dotenv.config();
 
+const authRoutes = require('./routes/authRoutes');
+
+
+
+
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+app.use('/api/auth', authRoutes);
+
 
 // Ping route
 app.get("/ping", (req, res) => {
