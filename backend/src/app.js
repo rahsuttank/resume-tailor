@@ -7,8 +7,7 @@ const mongoose = require("mongoose");
 dotenv.config();
 
 const authRoutes = require('./routes/authRoutes');
-
-
+const matchRoutes = require('./routes/matchRoutes');
 
 
 const app = express();
@@ -16,6 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
+app.use('/api/match', matchRoutes);
 
 
 // Ping route
