@@ -9,9 +9,9 @@ exports.getSuggestions = async (req, res) => {
 
   try {
     // Forward to AI microservice
-    const aiResponse = await axios.post('http://localhost:5001/suggest-resume', {
-      jobDescription,
-      resume: resumeText
+    const aiResponse = await axios.post('http://localhost:5001/suggest', {
+      jd_text: jobDescription,
+      resume_text: resumeText
     });
 
     return res.json(aiResponse.data);
