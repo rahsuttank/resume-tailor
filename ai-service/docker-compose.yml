@@ -11,6 +11,8 @@ services:
       - "5001:5001"
     volumes:
       - ./app:/app/app
+    env_file:
+      - .env
     environment:
       - PYTHONUNBUFFERED=1
     restart: unless-stopped
