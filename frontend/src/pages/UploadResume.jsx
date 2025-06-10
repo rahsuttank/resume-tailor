@@ -1,17 +1,26 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getResumeSuggestions } from '../services/matchService';
 
-const UploadResume = () => {
+export default function UploadResume() {
   const [resumeText, setResumeText] = useState('');
   const [jobDescription, setJobDescription] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleGetMatch = async () => {
+    setError('');
+    setLoading(true);
     try {
       const result = await getResumeSuggestions(jobDescription, resumeText);
-      console.log("Match score:", result.match_percentage);
-      // navigate to results page if needed
-    } catch (error) {
-      console.error("Error:", error);
+      console.log(result)
+      navigate('/results', { state: { matchData: result } });
+    } catch (err) {
+      console.error(err);
+      setError('Failed to fetch match score. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -21,53 +30,57 @@ const UploadResume = () => {
       <header className="bg-gray-100 p-4 flex justify-between items-center border-b">
         <h1 className="text-xl font-bold">ResumeMatch AI</h1>
         <nav className="space-x-4 text-sm">
-          <a href="#">Home</a>
-          <a href="#">Upload Resume</a>
-          <a href="#">Job Description Input</a>
-          <a href="#">Match Score Results</a>
-          <a href="#">User Feedback</a>
+          <a href="/">Home</a>
+          <a href="/upload">Upload Resume</a>
+          <a href="/results">Results</a>
         </nav>
       </header>
 
       {/* Main Content */}
       <div className="flex flex-1">
-        {/* Left Sidebar */}
-        <aside className="w-1/5 p-6 border-r text-center">
-          <h2 className="text-lg font-semibold">Upload Your Resume</h2>
+        {/* Resume Text Input */}
+        <aside className="w-1/2 p-6 border-r">
+          <h2 className="text-lg font-semibold mb-2">Step 1: Paste Your Resume Text</h2>
+          <textarea
+            rows={20}
+            value={resumeText}
+            onChange={e => setResumeText(e.target.value)}
+            placeholder="Paste the full text of your resume here..."
+            className="w-full h-full border p-4 rounded-md shadow-sm resize-none"
+          />
+          {resumeText && (
+            <p className="mt-2 text-green-700">Resume text ready ✅</p>
+          )}
         </aside>
 
-        {/* JD Input Center */}
-        <main className="flex-1 p-6 flex flex-col gap-4">
-          <h2 className="text-lg font-semibold mb-2">Paste or Upload Job Description</h2>
+        {/* Job Description Input */}
+        <main className="w-1/2 p-6 flex flex-col">
+          <h2 className="text-lg font-semibold mb-2">Step 2: Paste Job Description</h2>
           <textarea
-            rows={16}
+            rows={20}
             value={jobDescription}
-            onChange={(e) => setJobDescription(e.target.value)}
-            placeholder="Paste the job description here..."
-            className="w-full border p-4 rounded-md shadow-sm resize-none"
+            onChange={e => setJobDescription(e.target.value)}
+            placeholder="Paste the full job description here..."
+            className="w-full h-full border p-4 rounded-md shadow-sm resize-none mb-4"
           />
-
-          <button
-            onClick={handleGetMatch}
-            className="self-end mt-2 px-5 py-2 bg-blue-600 text-white font-medium rounded hover:bg-blue-700"
-          >
-            Get Match Score
-          </button>
         </main>
       </div>
 
-      {/* Footer */}
-      <footer className="border-t bg-gray-50 text-sm p-4 flex justify-between">
-        <div>
-          Contact Us: <a href="mailto:support@resumematch.ai" className="text-blue-600">support@resumematch.ai</a>
-        </div>
-        <div className="space-x-4">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
-        </div>
-      </footer>
+      {/* Action Button & Error */}
+      <div className="p-6 border-t flex justify-end items-center">
+        {error && <p className="text-red-600 mr-4">{error}</p>}
+        <button
+          onClick={handleGetMatch}
+          disabled={!resumeText || !jobDescription || loading}
+          className={`px-6 py-2 font-medium rounded \
+            ${!resumeText || !jobDescription
+              ? 'bg-gray-400 text-gray-700 cursor-not-allowed'
+              : 'bg-blue-600 text-white hover:bg-blue-700'}
+          `}
+        >
+          {loading ? 'Matching...' : 'Get Match Score'}
+        </button>
+      </div>
     </div>
   );
-};
-
-export default UploadResume;
+}
