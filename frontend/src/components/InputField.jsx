@@ -9,13 +9,16 @@ const InputField = ({
   placeholder = "",
   required = false,
   error = "",
+  helper = "",
   className = "",
+  fullWidth = true,
+  ...props
 }) => {
   return (
-    <div className={`mb-4 ${className}`}>
+    <div className={`mb-5 ${fullWidth ? 'w-full' : ''} ${className}`}>
       {label && (
-        <label htmlFor={name} className="block mb-1 font-medium text-gray-700">
-          {label}
+        <label htmlFor={name} className="block mb-1 font-semibold text-gray-800">
+          {label} {required && <span className="text-red-500">*</span>}
         </label>
       )}
       <input
@@ -26,9 +29,11 @@ const InputField = ({
         onChange={onChange}
         required={required}
         placeholder={placeholder}
-        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        className={`w-full px-4 py-3 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition text-base ${error ? 'border-red-500' : 'border-gray-300'}`}
+        {...props}
       />
-      {error && <p className="text-sm text-red-600 mt-1">{error}</p>}
+      {helper && !error && <p className="text-xs text-gray-500 mt-1">{helper}</p>}
+      {error && <p className="text-xs text-red-600 mt-1">{error}</p>}
     </div>
   );
 };

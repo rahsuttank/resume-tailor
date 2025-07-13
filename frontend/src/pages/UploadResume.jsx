@@ -1,6 +1,8 @@
+// src/pages/UploadResume.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getResumeSuggestions } from '../services/matchService';
+import Button from '../components/Button';
 
 export default function UploadResume() {
   const [resumeText, setResumeText] = useState('');
@@ -14,10 +16,8 @@ export default function UploadResume() {
     setLoading(true);
     try {
       const result = await getResumeSuggestions(jobDescription, resumeText);
-      console.log(result)
       navigate('/results', { state: { matchData: result } });
     } catch (err) {
-      console.error(err);
       setError('Failed to fetch match score. Please try again.');
     } finally {
       setLoading(false);
@@ -25,61 +25,47 @@ export default function UploadResume() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="bg-gray-100 p-4 flex justify-between items-center border-b">
-        <h1 className="text-xl font-bold">ResumeMatch AI</h1>
-        <nav className="space-x-4 text-sm">
-          <a href="/">Home</a>
-          <a href="/upload">Upload Resume</a>
-          <a href="/results">Results</a>
-        </nav>
-      </header>
-
-      {/* Main Content */}
-      <div className="flex flex-1">
+    <div className="flex min-h-[70vh] flex-col items-center justify-center bg-gray-50 py-12 px-4">
+      <div className="bg-white rounded-2xl shadow-lg w-full max-w-5xl flex flex-col md:flex-row overflow-hidden mb-8">
         {/* Resume Text Input */}
-        <aside className="w-1/2 p-6 border-r">
-          <h2 className="text-lg font-semibold mb-2">Step 1: Paste Your Resume Text</h2>
+        <aside className="md:w-1/2 p-10 border-b md:border-b-0 md:border-r border-gray-100 flex flex-col">
+          <h2 className="text-xl font-semibold mb-4">Step 1: Paste Your Resume</h2>
           <textarea
-            rows={20}
+            rows={16}
             value={resumeText}
             onChange={e => setResumeText(e.target.value)}
             placeholder="Paste the full text of your resume here..."
-            className="w-full h-full border p-4 rounded-md shadow-sm resize-none"
+            className="w-full h-full border px-6 py-4 rounded-xl shadow-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-base"
           />
           {resumeText && (
-            <p className="mt-2 text-green-700">Resume text ready ✅</p>
+            <p className="mt-4 text-green-700 text-sm">Resume text ready ✓</p>
           )}
         </aside>
 
         {/* Job Description Input */}
-        <main className="w-1/2 p-6 flex flex-col">
-          <h2 className="text-lg font-semibold mb-2">Step 2: Paste Job Description</h2>
+        <main className="md:w-1/2 p-10 flex flex-col">
+          <h2 className="text-xl font-semibold mb-4">Step 2: Paste Job Description</h2>
           <textarea
-            rows={20}
+            rows={16}
             value={jobDescription}
             onChange={e => setJobDescription(e.target.value)}
             placeholder="Paste the full job description here..."
-            className="w-full h-full border p-4 rounded-md shadow-sm resize-none mb-4"
+            className="w-full h-full border px-6 py-4 rounded-xl shadow-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-base"
           />
         </main>
       </div>
 
-      {/* Action Button & Error */}
-      <div className="p-6 border-t flex justify-end items-center">
-        {error && <p className="text-red-600 mr-4">{error}</p>}
-        <button
+      {/* Button and Error Section - Centered at Bottom */}
+      <div className="flex flex-col items-center gap-4">
+        {error && <p className="text-red-600 text-sm">{error}</p>}
+        <Button
           onClick={handleGetMatch}
           disabled={!resumeText || !jobDescription || loading}
-          className={`px-6 py-2 font-medium rounded \
-            ${!resumeText || !jobDescription
-              ? 'bg-gray-400 text-gray-700 cursor-not-allowed'
-              : 'bg-blue-600 text-white hover:bg-blue-700'}
-          `}
+          loading={loading}
+          className="px-12 py-4 text-lg"
         >
           {loading ? 'Matching...' : 'Get Match Score'}
-        </button>
+        </Button>
       </div>
     </div>
   );

@@ -3,6 +3,6 @@ const router = express.Router();
 const validateToken = require('../middleware/authMiddleware');
 const { getSuggestions } = require('../controllers/matchController');
 
-router.post('/suggest', validateToken, getSuggestions);
+router.post('/suggest', getSuggestions);
 
 module.exports = router;
