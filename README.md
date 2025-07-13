@@ -4,6 +4,23 @@
 
 ---
 
+## Demo
+
+### Home Page
+![Home Page](Demo/HomePage.png)
+
+### Login Page
+![Login Page](Demo/LoginPage.png)
+
+### Upload Resume Page
+![Upload Resume](Demo/uploadResume.png)
+
+### Results Page
+![Results Page 1](Demo/resultsPage-1.png)
+![Results Page 2](Demo/resultsPage-2.png)
+
+---
+
 ## Overview
 
 ResumeMatch AI is a full-stack application designed to enhance your chances of landing interviews by analyzing how well your resume aligns with specific job descriptions. Leveraging Google's Gemini AI, ResumeMatch AI provides personalized recommendations, match scores, and actionable suggestions to help you stand out in today's competitive job market.

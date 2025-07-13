@@ -14,11 +14,11 @@ const Header = () => {
 
   return (
     <header className="bg-white border-b shadow-sm px-6 py-3 flex items-center justify-between">
-      <Link to="/" className="text-2xl font-bold tracking-tight text-blue-700">
+      <Link to="/" className="flex items-center gap-3 text-2xl font-bold tracking-tight text-blue-700">
+        <img src="/logo.png" alt="ResumeMatch AI Logo" className="w-8 h-8" />
         ResumeMatch AI
       </Link>
       <nav className="flex items-center gap-6 text-base font-medium">
-        <Link to="/" className="hover:text-blue-600 transition">Home</Link>
         <Link to="/upload" className="hover:text-blue-600 transition">Upload Resume</Link>
         <Link to="/results" className="hover:text-blue-600 transition">Results</Link>
         {user && (
