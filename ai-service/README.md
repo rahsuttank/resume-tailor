@@ -1,110 +1,60 @@
-# 🧠 Resume AI Microservice
+# ResumeMatch AI – AI Service
 
-This is a FastAPI-based microservice designed to enhance resumes by:
-- Scoring how well a resume matches a job description.
-- Providing AI-powered suggestions to improve the resume for a given JD.
-
-It is part of the **AI-Powered Resume Tailor** project.
+This is the AI microservice for ResumeMatch AI, responsible for analyzing resumes and job descriptions using Google Gemini AI and returning match scores and suggestions.
 
 ---
 
-## 🚀 Features
-
-- `/suggest/resume` — Return resume improvement suggestions (stub for now)
-- `/match-score` — Compute a match score between resume and job description (to be implemented)
-- Clean, containerized architecture using Docker
-- Live development via hot-reloading (`uvicorn --reload`)
+## Overview
+- Built with FastAPI (Python) for high performance
+- Integrates with Google Gemini AI to analyze and compare resumes with job descriptions
+- Returns structured JSON with match percentage and actionable suggestions
 
 ---
 
-## 🧱 Folder Structure
-
-```
-ai-service/
-├── app/
-│   ├── main.py            # FastAPI app setup
-│   ├── routes/
-│   │   └── suggest.py     # Stub route for AI suggestion
-│   ├── services/          # Future: Logic for scoring, AI calls
-│   ├── utils/             # Future: Helpers for text preprocessing, parsing
-│   └── schemas/           # Future: Pydantic models
-├── requirements.txt
-├── Dockerfile
-├── docker-compose.yml
-└── .env
-```
+## Features
+- Receives resume and job description via API
+- Calls Gemini AI for analysis
+- Returns match score and personalized suggestions
+- Handles errors and ensures valid JSON responses
 
 ---
 
-## ⚙️ Setup (Local Dev)
-
-### 1. Install dependencies
-
-Make sure Python 3.11+ is installed, then:
-
-```bash
-pip install -r requirements.txt
-```
-
-### 2. Run the server
-
-```bash
-uvicorn app.main:app --reload --port 5001
-```
-
-Then open:
-```
-http://localhost:5001/docs
-```
+## Tech Stack
+- **Framework:** FastAPI (Python)
+- **AI Model:** Google Gemini 2.0 Flash
+- **HTTP Client:** Google Generative AI SDK
 
 ---
 
-## 🐳 Docker Setup (Recommended)
+## Setup Instructions
 
-### 1. Build and Run using Docker Compose
+1. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-```bash
-docker-compose up --build
-```
+2. **Create a .env file** in the ai-service directory:
+   ```env
+   GEMINI_API_KEY=your_gemini_api_key_here
+   ```
 
-### 2. Access the API
-
-Swagger UI:  
-[http://localhost:5001/docs](http://localhost:5001/docs)
-
----
-
-## 🔌 API Endpoints
-
-### POST `/suggest/resume`
-
-> Returns stubbed AI suggestions (replace with OpenAI/Gemma later)
-
-**Request**:
-```json
-{
-  "resume": "Experienced software engineer skilled in Node.js, React...",
-  "job_description": "Looking for a backend engineer with Node.js and MongoDB skills..."
-}
-```
-
-**Response (stub)**:
-```json
-{
-  "message": "Stub response for suggestions"
-}
-```
+3. **Start the service**
+   ```bash
+   uvicorn app.main:app --reload
+   ```
+   The AI service will run on `http://localhost:8000` by default.
 
 ---
 
-## 🛠️ Next Up
-
-- Add `/match-score` route using TF-IDF or OpenAI
-- Implement real AI suggestion logic using LLM
-- Add token limit checks and resume/JD parsing
+## API Endpoint
+- `POST /suggest` – Analyze resume and job description, return match score and suggestions
 
 ---
 
-## 📜 License
+## Environment Variables
+- `GEMINI_API_KEY` – Your Google Gemini API key
 
-MIT — you are free to use, modify, and distribute this microservice.
+---
+
+## Contact
+For questions or support, please contact tushar.tank24@gmail.com
